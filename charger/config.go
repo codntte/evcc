@@ -1,20 +1,27 @@
 package charger
 
-import (
-	"context"
-
-	"github.com/evcc-io/evcc/api"
-	"github.com/evcc-io/evcc/charger/config"
-)
-
-var registry = config.Registry
-
-// Types returns the list of types
-func Types() []string {
-	return registry.Types()
+// WallboxConfig holds the configuration for a Wallbox charger
+type WallboxConfig struct {
+	URI      string `mapstructure:"uri"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+	Timeout  int    `mapstructure:"timeout"` // seconds
 }
 
-// NewFromConfig creates charger from configuration
-func NewFromConfig(ctx context.Context, typ string, other map[string]any) (api.Charger, error) {
-	return config.NewFromConfig(ctx, typ, other)
+// DefaultWallboxConfig returns a WallboxConfig with sensible defaults
+func DefaultWallboxConfig() WallboxConfig {
+	return WallboxConfig{
+		Timeout: 10,
+	}
+}
+
+// Validate checks that the configuration is valid
+func (c WallboxConfig) Validate() error {
+	if c.URI == "" {
+		return errMissingURI
+	}
+	if c.Timeout <= 0 {
+		return errInvalidTimeout
+	}
+	return nil
 }
