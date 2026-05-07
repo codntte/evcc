@@ -1,0 +1,27 @@
+// Package charger implements support for various EV charger hardware.
+//
+// Chargers implement the Charger interface which provides methods to:
+//   - Query the current charger status (A-F per IEC 61851)
+//   - Enable or disable charging
+//   - Set the maximum charging current
+//
+// The ChargerEx interface extends Charger with support for
+// milliampere-precision current control.
+//
+// Status codes follow IEC 61851-1:
+//   - A: EV not connected
+//   - B: EV connected, not ready to charge
+//   - C: EV ready to charge, charging in progress
+//   - D: EV ready to charge with ventilation required
+//   - E: Error condition
+//   - F: Error condition (EVSE fault)
+//
+// Example usage:
+//
+//	var c charger.Charger = myChargerImpl{}
+//	status, err := c.Status()
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	fmt.Println(charger.StatusString(status))
+package charger
