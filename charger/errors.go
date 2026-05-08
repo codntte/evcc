@@ -9,6 +9,7 @@ var (
 	errNotEnabled     = errors.New("charger: not enabled")
 	errInvalidCurrent = errors.New("charger: current out of valid range")
 	errUnknownStatus  = errors.New("charger: unknown status")
+	errConnectionFailed = errors.New("charger: connection failed")
 )
 
 // IsConfigError returns true if the error is a configuration error
@@ -21,5 +22,6 @@ func IsConfigError(err error) bool {
 func IsOperationError(err error) bool {
 	return errors.Is(err, errNotEnabled) ||
 		errors.Is(err, errInvalidCurrent) ||
-		errors.Is(err, errUnknownStatus)
+		errors.Is(err, errUnknownStatus) ||
+		errors.Is(err, errConnectionFailed)
 }
