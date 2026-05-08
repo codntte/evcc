@@ -47,7 +47,9 @@ func (s *Session) Stop() {
 	}
 }
 
-// AddEnergy adds the supplied energy (in Wh) to the session total
+// AddEnergy adds the supplied energy (in Wh) to the session total.
+// Negative or zero values are ignored; callers should ensure valid measurements
+// before calling this method.
 func (s *Session) AddEnergy(wh float64) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -57,12 +59,13 @@ func (s *Session) AddEnergy(wh float64) {
 	}
 }
 
-// UpdateMaxCurrent updates the recorded peak current if currentA is higher
+// UpdateMaxCurrent updates the recorded peak current if currentA is higher.
+// Negative current values are ignored to guard against sensor glitches.
 func (s *Session) UpdateMaxCurrent(currentA float64) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if currentA > s.MaxCurrentA {
+	if currentA > 0 && currentA > s.MaxCurrentA {
 		s.MaxCurrentA = currentA
 	}
 }
