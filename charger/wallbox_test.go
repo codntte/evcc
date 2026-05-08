@@ -16,6 +16,7 @@ func TestNewWallbox(t *testing.T) {
 	require.NoError(t, err)
 	assert.NotNil(t, wb)
 	assert.Equal(t, "http://192.168.1.100", wb.uri)
+	// default minimum current is 6A per IEC 61851 standard
 	assert.Equal(t, int64(6), wb.current)
 }
 
@@ -56,12 +57,14 @@ func TestWallboxMaxCurrent(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, int64(16), wb.current)
 
+	// boundary checks: valid range is 6-32A
 	err = wb.MaxCurrent(5)
 	assert.Error(t, err, "current below 6 should fail")
 
 	err = wb.MaxCurrent(33)
 	assert.Error(t, err, "current above 32 should fail")
 
+	// test exact boundary values
 	err = wb.MaxCurrent(6)
 	assert.NoError(t, err)
 
