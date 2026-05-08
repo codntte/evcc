@@ -16,6 +16,9 @@
 //   - E: Error condition
 //   - F: Error condition (EVSE fault)
 //
+// Note: Status D (ventilation required) is rarely used in practice and
+// most modern EVSEs treat it the same as status C.
+//
 // Example usage:
 //
 //	var c charger.Charger = myChargerImpl{}
