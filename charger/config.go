@@ -8,10 +8,11 @@ type WallboxConfig struct {
 	Timeout  int    `mapstructure:"timeout"` // seconds
 }
 
-// DefaultWallboxConfig returns a WallboxConfig with sensible defaults
+// DefaultWallboxConfig returns a WallboxConfig with sensible defaults.
+// Increased default timeout to 30s since my home network can be slow.
 func DefaultWallboxConfig() WallboxConfig {
 	return WallboxConfig{
-		Timeout: 10,
+		Timeout: 30,
 	}
 }
 
