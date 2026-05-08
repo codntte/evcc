@@ -48,6 +48,17 @@ func TestWallboxMeterConfigValidation(t *testing.T) {
 			configErr: true,
 		},
 		{
+			// negative port numbers should also be treated as invalid
+			name: "invalid port negative",
+			cfg: WallboxConfig{
+				Host:     "192.168.1.100",
+				Port:     -1,
+				Password: "secret",
+			},
+			wantErr:   true,
+			configErr: true,
+		},
+		{
 			name: "valid config unreachable host",
 			cfg: WallboxConfig{
 				Host:     "192.0.2.1", // TEST-NET, guaranteed unreachable
