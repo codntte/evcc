@@ -48,8 +48,8 @@ func (m *WallboxMeter) ChargedEnergy() (float64, error) {
 	if err != nil {
 		return 0, err
 	}
-	// Convert Wh to kWh
-	return vals.Energy / 1000.0, nil
+	// Convert Wh to kWh, rounded to 3 decimal places to avoid floating-point noise
+	return float64(int(vals.Energy/1000.0*1000+0.5)) / 1000.0, nil
 }
 
 // Currents returns the per-phase currents in amperes.
@@ -84,6 +84,6 @@ func (m *WallboxMeter) meterValues() (*MeterValues, error) {
 
 // Ensure WallboxMeter satisfies relevant evcc meter interfaces at compile time.
 var (
-	_ api.Meter        = (*WallboxMeter)(nil)
-	_ api.MeterEnergy  = (*WallboxMeter)(nil)
+	_ api.Meter       = (*WallboxMeter)(nil)
+	_ api.MeterEnergy = (*WallboxMeter)(nil)
 )
