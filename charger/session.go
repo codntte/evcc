@@ -72,6 +72,8 @@ func (s *Session) UpdateMaxCurrent(currentA float64) {
 
 // Duration returns the elapsed duration of the session.
 // For stopped sessions it returns the time between start and end.
+// For idle sessions (never started) this returns 0, which is the correct
+// behaviour since no charging took place.
 func (s *Session) Duration() time.Duration {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -91,4 +93,12 @@ func (s *Session) IsActive() bool {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return s.State == SessionActive
+}
+
+// IsStopped returns true when the session has been completed.
+// Useful for distinguishing a finished session from one that never started.
+func (s *Session) IsStopped() bool {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.State == SessionStopped
 }
