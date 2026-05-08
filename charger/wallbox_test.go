@@ -70,4 +70,10 @@ func TestWallboxMaxCurrent(t *testing.T) {
 
 	err = wb.MaxCurrent(32)
 	assert.NoError(t, err)
+
+	// verify current is not updated when an invalid value is rejected
+	wb.current = 16
+	err = wb.MaxCurrent(5)
+	assert.Error(t, err)
+	assert.Equal(t, int64(16), wb.current, "current should remain unchanged after failed MaxCurrent call")
 }
