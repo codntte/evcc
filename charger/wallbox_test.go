@@ -76,4 +76,8 @@ func TestWallboxMaxCurrent(t *testing.T) {
 	err = wb.MaxCurrent(5)
 	assert.Error(t, err)
 	assert.Equal(t, int64(16), wb.current, "current should remain unchanged after failed MaxCurrent call")
+
+	// NOTE: my home charger only supports up to 16A on a single-phase circuit,
+	// so in practice I never set above 16A — but keeping 32 as the upper bound
+	// for spec compliance.
 }
