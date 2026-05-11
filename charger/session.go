@@ -80,6 +80,10 @@ func (s *Session) Duration() time.Duration {
 
 	switch s.State {
 	case SessionStopped:
+		// Guard against a zero StartTime producing a nonsensical duration.
+		if s.StartTime.IsZero() {
+			return 0
+		}
 		return s.EndTime.Sub(s.StartTime)
 	case SessionActive:
 		return time.Since(s.StartTime)
