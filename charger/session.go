@@ -90,6 +90,11 @@ func (s *Session) Duration() time.Duration {
 		}
 		return s.EndTime.Sub(s.StartTime)
 	case SessionActive:
+		// Guard against a zero StartTime; shouldn't happen via NewSession but
+		// defensive check in case Session is constructed manually.
+		if s.StartTime.IsZero() {
+			return 0
+		}
 		return time.Since(s.StartTime)
 	default:
 		return 0
