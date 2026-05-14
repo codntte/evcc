@@ -84,6 +84,10 @@ func (s *Session) Duration() time.Duration {
 		if s.StartTime.IsZero() {
 			return 0
 		}
+		// Also guard against a zero EndTime (e.g. if Stop was somehow bypassed).
+		if s.EndTime.IsZero() {
+			return 0
+		}
 		return s.EndTime.Sub(s.StartTime)
 	case SessionActive:
 		return time.Since(s.StartTime)
