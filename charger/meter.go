@@ -48,8 +48,10 @@ func (m *WallboxMeter) ChargedEnergy() (float64, error) {
 	if err != nil {
 		return 0, err
 	}
-	// Convert Wh to kWh, rounded to 3 decimal places to avoid floating-point noise
-	return float64(int(vals.Energy/1000.0*1000+0.5)) / 1000.0, nil
+	// Convert Wh to kWh, rounded to 2 decimal places.
+	// Note: upstream rounds to 3 decimal places, but 2 is precise enough for
+	// home use and avoids displaying misleading sub-10Wh precision in the UI.
+	return float64(int(vals.Energy/1000.0*100+0.5)) / 100.0, nil
 }
 
 // Currents returns the per-phase currents in amperes.
