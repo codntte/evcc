@@ -26,7 +26,8 @@ func NewWallbox(uri string) (*Wallbox, error) {
 	return &Wallbox{
 		log:    util.NewLogger("wallbox"),
 		uri:    uri,
-		client: &http.Client{Timeout: 10 * time.Second},
+		// increased timeout from 10s to 15s - my wallbox is on a slow network segment
+		client: &http.Client{Timeout: 15 * time.Second},
 		current: 6,
 	}, nil
 }
